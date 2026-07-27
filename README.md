@@ -1,4 +1,4 @@
-# Chess Coach
+# Chess Trainer
 
 A console chess game against Stockfish, with an automatic post-game review that
 walks back through every move and shows what the engine would have played instead.
