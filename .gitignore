@@ -1,0 +1,25 @@
+# Build output
+build/
+out/
+cmake-build-*/
+
+# Compiled binaries
+*.exe
+*.obj
+*.o
+*.exp
+*.lib
+*.pdb
+*.ilk
+
+# Generated during play/testing
+*.pgn
+
+# Editor
+.vscode/
+.vs/
+*.user
+
+# OS
+Thumbs.db
+.DS_Store
