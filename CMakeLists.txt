@@ -1,4 +1,4 @@
-cmake_minimum_require(VERSION 3.15)
+cmake_minimum_required(VERSION 3.15)
 project(chess-trainer VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -31,7 +31,7 @@ add_library(chess_core
 target_include_directories(chess_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_executable(chess-trainer src/main.cpp)
-target_link_libraries(chess-trainer PRIVATE chess-core)
+target_link_libraries(chess-trainer PRIVATE chess_core)
 
 add_executable(perft tests/perft.cpp)
 target_link_libraries(perft PRIVATE chess_core)
