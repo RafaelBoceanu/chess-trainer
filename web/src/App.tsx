@@ -2,7 +2,7 @@ import { useState } from "react";
 import ChessBoard from "./components/ChessBoard";
 import ReviewPanel from "./components/ReviewPanel";
 import { createGame, makeMove, fetchReview } from "./api";
-import type { GameState, GameReview, Color } from "./types";
+import type { GameState, GameReview, Color, ReviewedMove } from "./types";
 
 type Screen = "setup" | "playing" | "reviewing";
 
@@ -23,6 +23,7 @@ export default function App() {
   const [review, setReview] = useState<GameReview | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedMove, setSelectedMove] = useState<ReviewedMove | null>(null);
 
   async function handleStart() {
     setBusy(true);
@@ -63,6 +64,8 @@ export default function App() {
     try {
       const r = await fetchReview(gameState.sessionId);
       setReview(r);
+      const playerMoves = r.moves.filter((m) => m.side === gameState.humanColor);
+      setSelectedMove(playerMoves.length > 0 ? playerMoves[playerMoves.length - 1] : null);
       setScreen("reviewing");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Review failed");
@@ -115,7 +118,11 @@ export default function App() {
       <div style={{ display: "flex", gap: 32 }}>
         <div>
           <ChessBoard
-            gameState={gameState}
+            gameState={
+              screen === "reviewing" && selectedMove
+              ? { ...gameState, fen: selectedMove.fenAfter, legalMoves: {} }
+              : gameState
+            }
             onMove={handleMove}
             disabled={busy || screen === "reviewing"}
           />
@@ -142,7 +149,13 @@ export default function App() {
           </div>
         </div>
 
-        {screen === "reviewing" && review && <ReviewPanel review={review} />}
+        {screen === "reviewing" && review && (
+          <ReviewPanel 
+            review={review}
+            humanColor={gameState.humanColor} 
+            selectedMove={selectedMove} 
+            onSelectMove={setSelectedMove}/>
+        )}
       </div>
     </div>
   );

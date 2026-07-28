@@ -24,6 +24,8 @@ namespace chess {
         int moveNumber = 0;
         Color side = Color::White;
         Move played;
+        std::string fen;
+        std::string fenAfter;
         std::string playedSan;
         Move best;
         std::string bestSan;

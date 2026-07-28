@@ -69,6 +69,8 @@ json reviewedMoveJson(const ReviewedMove& rm) {
     json j;
     j["moveNumber"] = rm.moveNumber;
     j["side"] = colorToString(rm.side);
+    j["fen"] = rm.fen;
+    j["fenAfter"] = rm.fenAfter;
     j["playedSan"] = rm.playedSan;
     j["bestSan"] = rm.bestSan;
     j["evalBefore"] = rm.evalBefore;

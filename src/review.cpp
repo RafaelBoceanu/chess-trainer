@@ -127,6 +127,7 @@ namespace chess {
             rm.moveNumber = board.fullmoveNumber();
             rm.side = mover;
             rm.played = played;
+            rm.fen = fenBefore;
             rm.playedSan = moveToSan(board, played);
             rm.best = current.bestMove;
             rm.bestSan = current.bestMove.isNull() ? "" : moveToSan(board, current.bestMove);
@@ -136,6 +137,7 @@ namespace chess {
             rm.bestLineSan = pvToSan(fenBefore, current.pv, config.pvLength);
 
             board.makeMove(played);
+            rm.fenAfter = board.toFen();
 
             GameResult resultAfterMove = getGameResult(board);
             EngineLine after;

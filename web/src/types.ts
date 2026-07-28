@@ -23,6 +23,8 @@ export interface GameState {
 export interface ReviewedMove {
   moveNumber: number;
   side: Color;
+  fen: string;
+  fenAfter: string;
   playedSan: string;
   bestSan: string;
   evalBefore: number;
