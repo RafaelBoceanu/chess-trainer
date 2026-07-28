@@ -38,3 +38,28 @@ target_link_libraries(perft PRIVATE chess_core)
 
 enable_testing()
 add_test(NAME perft_suite COMMAND perft 4)
+
+include(FetchContent)
+
+FetchContent_Declare(
+    httplib
+    GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+    GIT_TAG v0.15.3
+)
+FetchContent_Declare(
+    json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG v3.11.3
+)
+FetchContent_MakeAvailable(httplib json)
+
+add_executable(chess-server
+    server/src/session_manager.cpp
+    server/src/http_server.cpp
+    server/src/server_main.cpp
+)
+target_include_directories(chess-server PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/server/include
+    ${httplib_SOURCE_DIR}
+)
+target_link_libraries(chess-server PRIVATE chess_core nlohmann_json::nlohmann_json)

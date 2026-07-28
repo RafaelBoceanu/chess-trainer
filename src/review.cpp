@@ -137,10 +137,17 @@ namespace chess {
 
             board.makeMove(played);
 
-            // The eval after the move is from the opponent's perspective, so it is
-            // negated to keep everything in the mover's frame
-            EngineLine after = engine.analyse(board.toFen(), config.depth);
-            rm.evalAfter = -lineToCp(after);
+            GameResult resultAfterMove = getGameResult(board);
+            EngineLine after;
+
+            if (resultAfterMove == GameResult::WhiteWins || resultAfterMove == GameResult::BlackWins) {
+                rm.evalAfter = MATE_SCORE;
+            } else if (resultAfterMove != GameResult::Ongoing) {
+                rm.evalAfter = 0;
+            } else {
+                after = engine.analyse(board.toFen(), config.depth);
+                rm.evalAfter = -lineToCp(after);
+            }
 
             int loss = rm.evalBefore - rm.evalAfter;
             rm.centipawnLoss = std::max(0, loss);
